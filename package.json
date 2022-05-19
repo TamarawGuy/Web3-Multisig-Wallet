@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15",
     "truffle": "^5.5.14"
   }
 }
