@@ -3,6 +3,7 @@ import { getWeb3, getWallet } from "./utils";
 
 import Header from "./Header";
 import NewTransfer from "./NewTransfer";
+import TransferList from "./TransferList";
 
 const App = () => {
   const [web3, setWeb3] = useState(undefined);
@@ -10,6 +11,7 @@ const App = () => {
   const [wallet, setWallet] = useState(undefined);
   const [approvers, setApprovers] = useState(undefined);
   const [quorum, setQuorum] = useState(undefined);
+  const [transfers, setTransfers] = useState([]);
 
   useEffect(() => {
     const init = async () => {
@@ -18,11 +20,13 @@ const App = () => {
       const accounts = await web3.eth.getAccounts();
       const approvers = await wallet.methods.getApprovers().call();
       const quorum = await wallet.methods.quorum().call();
+      const transfers = await wallet.methods.getTransfers().call();
       setWeb3(web3);
       setAccounts(accounts);
       setWallet(wallet);
       setApprovers(approvers);
       setQuorum(quorum);
+      setTransfers(transfers);
     };
     init();
   }, []);
@@ -47,6 +51,7 @@ const App = () => {
     <div>
       <Header approvers={approvers} quorum={quorum} />
       <NewTransfer createTransfer={createTransfer} />
+      <TransferList transfers={transfers} />
     </div>
   );
 };
