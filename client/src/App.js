@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     const init = async () => {
-      const web3 = getWeb3();
+      const web3 = await getWeb3();
       const wallet = await getWallet(web3);
       const accounts = await web3.eth.getAccounts();
       const approvers = await wallet.methods.getApprovers().call();
@@ -37,6 +37,10 @@ const App = () => {
       .send({ from: accounts[0] });
   };
 
+  const approveTransfer = (transferId) => {
+    wallet.methods.approveTransfer(transferId).send({ from: accounts[0] });
+  };
+
   if (
     typeof web3 === "undefined" ||
     typeof accounts === "undefined" ||
@@ -51,7 +55,7 @@ const App = () => {
     <div>
       <Header approvers={approvers} quorum={quorum} />
       <NewTransfer createTransfer={createTransfer} />
-      <TransferList transfers={transfers} />
+      <TransferList transfers={transfers} approveTransfer={approveTransfer} />
     </div>
   );
 };
